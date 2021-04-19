@@ -8,10 +8,11 @@
       <div class="card-body p-3">
         <form>
           <div class="col-12 d-flex justify-content-center align-items-center flex-column" >
-            <ValidationProvider class="validator" name="price" rules="required|min_length:1" >
+            <ValidationProvider class="validator" name="depositprice"
+            rules="required|min_length_deposit:1" >
               <div slot-scope="{ errors }" class="mb-3 col-md-3 col-lg-3 col-12 mb-5">
                 <label for="money" class="form-label">Digite quanto deseja depósitar</label>
-                <money v-model="price" v-bind="money" name="price" ></money>
+                <money v-model="depositprice" v-bind="depositmoney" name="depositprice" ></money>
                 <p class="error" >{{ errors[0] }}</p>
               </div>
             </ValidationProvider>
@@ -37,7 +38,7 @@ extend('required', {
   message: 'Esse campo é obrigatório.',
 });
 
-extend('min_length', {
+extend('min_length_deposit', {
   ...minValue,
   message: 'O valor minímo para depositar é R$ 1,00.',
 });
@@ -47,8 +48,8 @@ type NewType=any;
 export default Vue.extend({
   data() {
     return {
-      price: 1.00 as number,
-      money: {
+      depositprice: 1.00 as number,
+      depositmoney: {
         decimal: ',',
         thousands: '.',
         prefix: 'R$ ',
@@ -64,7 +65,7 @@ export default Vue.extend({
   methods: {
     withDraw(event:NewType) {
       event.preventDefault();
-      addTransaction(this.price).then((res):any => {
+      addTransaction(this.depositprice).then((res):any => {
         if (res.status === 201) {
           this.$notify({
             group: 'auth',

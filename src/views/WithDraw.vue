@@ -8,10 +8,11 @@
       <div class="card-body p-3">
         <form>
           <div class="col-12 d-flex justify-content-center align-items-center flex-column" >
-            <ValidationProvider class="validator" name="price" rules="required|min_length:5" >
+            <ValidationProvider class="validator" name="withdrawprice"
+            rules="required|min_length:5" >
               <div slot-scope="{ errors }" class="mb-3 col-md-3 col-lg-3 col-12 mb-5">
                 <label for="money" class="form-label">Digite quanto deseja retirar</label>
-                <money v-model="price" v-bind="money" name="price" ></money>
+                <money v-model="withdrawprice" v-bind="withdrawmoney" name="withdrawprice" ></money>
                 <p class="error" >{{ errors[0] }}</p>
               </div>
             </ValidationProvider>
@@ -45,8 +46,8 @@ extend('min_length', {
 export default Vue.extend({
   data() {
     return {
-      price: 5.00 as number,
-      money: {
+      withdrawprice: 5.00 as number,
+      withdrawmoney: {
         decimal: ',',
         thousands: '.',
         prefix: 'R$ ',
@@ -62,7 +63,7 @@ export default Vue.extend({
   methods: {
     withDraw(event:any) {
       event.preventDefault();
-      subtTransaction(this.price).then((res) => {
+      subtTransaction(this.withdrawprice).then((res) => {
         if (res.status === 201) {
           this.$notify({
             group: 'auth',
