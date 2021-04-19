@@ -6,7 +6,6 @@
       </div>
       <router-link class="m-3" to="/home" >Voltar</router-link>
       <div class="card-body p-3">
-        <form>
           <div class="col-12 d-flex justify-content-center align-items-center flex-column" >
             <ValidationProvider class="validator" name="withdrawprice"
             rules="required|min_length:5" >
@@ -21,7 +20,6 @@
               Retirar Dinheiro
             </button>
           </div>
-        </form>
       </div>
     </div>
   </div>
