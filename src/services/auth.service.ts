@@ -6,7 +6,7 @@ export const getTokenAuth = ():string => Store.getters['auth/getToken'];
 
 export const getUserAuthenticate = ():User => Store.getters['auth/getUser'];
 
-const authLogin = async (data:any):Promise<any> => {
+const authLogin = async (data:any):Promise<User|any> => {
   const user = await api.post('/login', data);
 
   return user.data;

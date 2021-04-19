@@ -1,3 +1,5 @@
+import Account from '@/models/useraccount.interface';
+
 export default interface User {
     id?:number;
     name:string;

@@ -23,16 +23,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import menu from '@/components/Menu.vue'; // @ is an alias to /src
-import User from '@/models/user.interface';
 import getAccount from '@/services/account.service';
-import createNumberMask from 'text-mask-addons/dist/createNumberMask';
-
-const currencyMask = createNumberMask({
-  prefix: 'R$ ',
-  allowDecimal: true,
-  includeThousandsSeparator: true,
-  allowNegative: false,
-});
+import User from '../models/user.interface';
 
 export default Vue.extend({
   components: {
@@ -44,23 +36,25 @@ export default Vue.extend({
       agency: 0 as number,
       name: '' as string,
       numberAccount: 0,
-      mask: currencyMask as any,
       text: '' as string,
     };
   },
   created() {
-    try {
-      getAccount().then((res) => {
-        const account = res.useraccount;
-        this.balance = parseFloat(account.balance);
-        this.agency = account.agency;
-        this.numberAccount = account.number_account;
-        this.name = res.name;
-        this.$store.dispatch('account/setAccount', res.useraccount);
-      }).catch((error):any => console.log(error));
-    } catch (error) {
-      console.log(error);
-    }
+    getAccount().then((res):User|any => {
+      this.balance = parseFloat(res.useraccount.balance);
+      this.agency = res.useraccount.agency;
+      this.numberAccount = res.useraccount.number_account;
+      this.name = res.name;
+      this.$store.dispatch('account/setAccount', res.useraccount);
+    }).catch((error):any => {
+      this.$notify({
+        group: 'auth',
+        type: 'error',
+        title: 'Atenção',
+        text: error.response.data.errors instanceof Array ? error.response.data.errors[0]
+          : error.response.data.errors,
+      });
+    });
   },
   methods: {
     formatPrice(value:number) {

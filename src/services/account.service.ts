@@ -2,7 +2,7 @@ import api from '@/config/api.config';
 import User from '@/models/user.interface';
 import { getTokenAuth, getUserAuthenticate } from './auth.service';
 
-const getAccount = async ():Promise<User> => {
+const getAccount = async ():Promise<User|any> => {
   const userAuthenticated = getUserAuthenticate();
   const user = await api.get(`/user/${userAuthenticated.id}`, {
     headers: {

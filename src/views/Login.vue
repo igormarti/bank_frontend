@@ -37,6 +37,7 @@
 import Vue from 'vue';
 import { extend, ValidationProvider } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
+import User from '@/models/user.interface';
 import authLogin from '@/services/auth.service';
 
 extend('required', {
@@ -61,14 +62,21 @@ export default Vue.extend({
     ValidationProvider,
   },
   methods: {
-    async login(event:any):Promise<any> {
+    login(event:any):void {
       event.preventDefault();
       const data = { email: this.email, password: this.password };
-      authLogin(data).then((user:any) => {
-        console.log(user);
+      authLogin(data).then((user:User|any) => {
         this.$store.dispatch('auth/saveUser', user);
         this.$router.replace('home');
-      }).catch((error) => console.log(error));
+      }).catch((error) => {
+        this.$notify({
+          group: 'auth',
+          type: 'error',
+          title: 'Atenção',
+          text: error.response.data.errors instanceof Array ? error.response.data.errors[0]
+            : error.response.data.errors,
+        });
+      });
     },
   },
 });

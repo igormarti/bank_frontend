@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Vue from 'vue';
-import router from '@/router';
 
 const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/',
@@ -22,7 +21,7 @@ api.interceptors.response.use((response) => {
         : error.response.data.errors,
     });
     localStorage.clear();
-    router.replace('/login');
+    window.location.href = '/login';
     return false;
   }
 
