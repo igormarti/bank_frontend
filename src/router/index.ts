@@ -57,17 +57,19 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const userString = localStorage.getItem('vuex');
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
   if (userString) {
+    console.log('oi');
     const userCurrent = JSON.parse(userString.toString());
-    const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-
     if (requiresAuth && !userCurrent) next('login');
     else if (!requiresAuth && userCurrent) next('home');
     else next();
-  } else {
-    next();
+    return;
   }
+
+  if (requiresAuth) next('login');
+  else next();
 });
 
 export default router;
