@@ -4,7 +4,7 @@ import User from '@/models/user.interface';
 
 export const getTokenAuth = ():string => Store.getters['auth/getToken'];
 
-export const getUserAuthenticate = ():User => Store.getters['auth/getUser'];
+export const getUserAuthenticate = ():User|any => Store.getters['auth/getUser'];
 
 const authLogin = async (data:any):Promise<User|any> => {
   const user = await api.post('/login', data);

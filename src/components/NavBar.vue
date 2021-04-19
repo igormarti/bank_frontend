@@ -5,7 +5,7 @@
         Banco <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/google/110/regional-indicator-symbol-letter-c_1f1e8.png"
         alt="" width="35" height="35" class="p-0">apgemini
     </a>
-      <a href="javascript:void(0)" @click="logOut" class="offset-12" >
+      <a v-if="isLoggedIn" href="javascript:void(0)" @click="logOut" class="offset-12" >
           <exit-icons fillColor="#fff" :size="27" />
       </a>
     </div>
@@ -15,15 +15,21 @@
 <script lang="ts">
 import Vue from 'vue';
 import Exit from 'vue-material-design-icons/ExitToApp.vue';
-import { logToOut } from '../services/auth.service';
+import { logToOut, getUserAuthenticate } from '../services/auth.service';
 
 Vue.component('exit-icons', Exit);
 
 export default Vue.extend({
   name: 'NavBar',
+  data() {
+    return {
+      authenticated: true as boolean,
+    };
+  },
   methods: {
     logOut() {
       logToOut().then((res):any => {
+        this.$store.dispatch('auth/removeUser');
         localStorage.clear();
         this.$router.replace('/');
       }).catch((error):any => {
@@ -36,6 +42,9 @@ export default Vue.extend({
         });
       });
     },
+  },
+  computed: {
+    isLoggedIn() { return this.$store.getters['auth/getUser']; },
   },
 });
 

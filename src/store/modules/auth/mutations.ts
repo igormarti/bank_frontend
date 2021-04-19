@@ -5,7 +5,7 @@ const mutations = {
     state.auth = auth;
   },
   removeUserInSession(state:any) {
-    state.auth = null;
+    state.auth = {};
   },
 };
 

@@ -1,5 +1,5 @@
 const state = () => ({
-  auth: null,
+  auth: {},
 });
 
 export default state;
